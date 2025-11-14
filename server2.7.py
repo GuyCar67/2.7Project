@@ -11,7 +11,7 @@ import os
 import shutil
 import subprocess
 import pyautogui
-
+import Protocol2.7
 
 
 QUEUE_LEN = 1
@@ -79,14 +79,6 @@ def exit_fucntion(client_socket):
         return f"failed to close client: {err}"
 
 def main():
-    print(dir_path(input("please enter a directory path: ")))
-    #print(dir_remove(input("please enter a File to reomve: ")))
-    ##copy_to = input("enter file to copy to: ")
-    #print(copy_files(copy_from, copy_to))
-    #print(execute_files(input("enter file u want to execute:")))
-    #take_screenshot()
-    #send_screenshot()
-
     my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         my_socket.bind(('0.0.0.0', 6741))
@@ -98,40 +90,40 @@ def main():
 
             try:
                 while True:
-                    request = client_socket.recv(MAX_PACKET).decode()
+                    request_bytes = recv_message(client_socket)
+                    if not request_bytes:
+                        break
+                    request = request_bytes.decode()
 
                     if request.startswith("DIR"):
-                        path_without_command = request[4::].strip()
-                        response_to_user = dir_path(path_without_command)
-                        client_socket.send(response_to_user.encode())
-
-                    elif request == 'NAME':
-                        client_socket.send(name_func().encode())
-
-                    elif request == 'RAND':
-                        client_socket.send(rand_func().encode())
+                        path_without_command = request[4:].strip()
+                        files_list = dir_path(path_without_command)
+                        response_to_user = "\n".join(files_list)
+                        send_message(client_socket, response_to_user.encode())
 
                     elif request == 'EXIT':
                         response_to_user = exit_fucntion(client_socket)
                         logging.info("exited server")
-                        client_socket.send(response_to_user.encode())
+                        send_message(client_socket, response_to_user.encode())
+                        break
 
                     else:
                         wrong_request = request + ' is not a valid command'
-                        client_socket.send(wrong_request.encode())
-                        logging.warning('user sent unavilable request')
+                        send_message(client_socket, wrong_request.encode())
+                        logging.warning('user sent unavailable request')
 
             except socket.error as err:
-                logging.error('received socket error on client socket' + str(err))
+                logging.error('received socket error on client socket ' + str(err))
 
             finally:
                 client_socket.close()
 
     except socket.error as err:
-        print('received socket error on server socket' + str(err))
+        print('received socket error on server socket ' + str(err))
 
     finally:
         my_socket.close()
+
 
 
 
