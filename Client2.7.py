@@ -1,41 +1,42 @@
 import socket
 import logging
-
+import Protocol
 
 
 
 MAX_PACKET = 1024
+SERVER_IP = "127.0.0.1"
+SERVER_PORT = 6741
 
-my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 def main():
-    client_connect = True
+    my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        my_socket.connect(('127.0.0.1', 6741))
-
-        while client_connect:
-            print('Choose mode: TIME , NAME , RAND , EXIT')
-            user_input = input()
+        my_socket.connect((SERVER_IP, SERVER_PORT))
+        logging.info("connected to server")
+        while True:
+            user_input = input("Enter command:"
+                               "DIR/REMOVE/COPY/EXECUTE/SCREENSHOT/EXIT <path>:"
+                               "Enter HELP for detailed help")
+            Protocol.send_message(my_socket, user_input)
             logging.info(f'user has chosen mode {user_input}')
 
-            if len(user_input) !=4:
-                logging.error('Wrong number of bytes')
-                print('Please enter 4 bytes')
-                continue
+            cmd, data = Protocol.recv_message(my_socket)
+            if cmd is None:
+                logging.info("user disconnected")
+                break
 
-            my_socket.send(user_input.encode())
-            logging.info(f'user requested {user_input}')
-            response = my_socket.recv(MAX_PACKET).decode()
-            logging.info(f"user got response - {response}")
-            print (response)
+            if cmd == "SCREENSHOT":
+                with open("received_screenshot.jpg", "wb") as f:
+                    f.write(data)
+                print("Screenshot saved.")
+            else:
+                print(cmd)
 
-            if user_input == 'EXIT':
-                logging.info('user chose EXIT')
-                client_connect = False
 
     except socket.error as err:
         print('received socket error ' + str(err))
-
+        logging.critical("socket error")
     finally:
         my_socket.close()
         logging.info('Closing ')
@@ -43,7 +44,7 @@ def main():
 
 if __name__ == "__main__":
     logging.basicConfig(
-        filename='2.6CLIENT.log',
+        filename='2.7CLIENT.log',
         level=logging.INFO,
         format='%(asctime)s - %(levelname)s - %(message)s'
     )

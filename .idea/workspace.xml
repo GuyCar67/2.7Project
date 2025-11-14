@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="97a15429-ddd2-411c-aed1-abd90da03296" name="Changes" comment="13/11">
-      <change afterPath="$PROJECT_DIR$/Protocol2.7.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2.7.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client2.7.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Protocol2.7.py" beforeDir="false" afterPath="$PROJECT_DIR$/Protocol.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server2.7.py" beforeDir="false" afterPath="$PROJECT_DIR$/server2.7.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,19 +45,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.server2.7.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.Client2.7.executor": "Run",
+    "Python.Protocol.executor": "Run",
+    "Python.server2.7.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "junie.onboarding.icon.badge.shown": "true",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "to.speed.mode.migration.done": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -79,7 +83,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763077253997</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="13/11">
+      <option name="closed" value="true" />
+      <created>1763125287267</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1763125287267</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

@@ -1,6 +1,5 @@
 import struct
 import logging
-import socket
 GLOB_LEN = 4
 def send_message(sock, msg):
     # Remove leading/trailing whitespace
@@ -23,15 +22,20 @@ def send_message(sock, msg):
     data_len = struct.pack("I", len(encoded_data))
 
     full_message = cmd_len + encoded_cmd + data_len + encoded_data
-    sent = b''
-    while len(sent) < len(full_message):
+
+    sent = 0
+    while sent < len(full_message):
         try:
             message_sent = sock.send(full_message[sent::])
+            if message_sent == 0:
+                logging.error("socket connection broken")
+                return None, None
             sent += message_sent
         except Exception as err:
             print("send failed", err)
             logging.warning("send failed client disconected")
-            break
+            return None, None
+    return None
 
 
 def recv_message(sock):
@@ -40,7 +44,20 @@ def recv_message(sock):
         temp_len += sock.recv(GLOB_LEN - len(temp_len))
         if temp_len == b"":
             logging.warning("closed while receiving message")
-            break
+            return None, None
+    if temp_len != b"":
+        command_length = struct.unpack("I", temp_len)[0]
+        command = b''
+        while len(command) < command_length:
+            command += sock.recv(command_length - len(command))
+    else:
+        command = temp_len
+    temp_len = b''
+    while len(temp_len) < GLOB_LEN:
+        temp_len += sock.recv(GLOB_LEN - len(temp_len))
+        if temp_len == b"":
+            logging.warning("closed while receiving message")
+            return None , None
     if temp_len != b"":
         message_length = struct.unpack("I", temp_len)[0]
         message = b''
@@ -48,7 +65,9 @@ def recv_message(sock):
             message += sock.recv(message_length - len(message))
     else:
         message = temp_len
-    return message
+    command = command.decode()
+    message = message.decode()
+    return command, message
 
 if __name__ == "__main__":
     logging.basicConfig(

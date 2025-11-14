@@ -10,8 +10,10 @@ import glob
 import os
 import shutil
 import subprocess
+from re import search
+
 import pyautogui
-import Protocol2.7
+import Protocol
 
 
 QUEUE_LEN = 1
@@ -27,7 +29,7 @@ def dir_path(user_dir):
         return ['file not found']
 
 
-def dir_remove(user_file):
+def remove_file(user_file):
     try:
         os.remove(user_file)
         return " files removed"
@@ -40,13 +42,13 @@ def copy_files(copy_from, copy_to):
         shutil.copy(copy_from, copy_to)
         return " copied file"
     except OSError:
-        return "file not found"
+        return "files not found"
 
 
 def execute_files(user_file_exe):
         try:
-          if  subprocess.call(user_file_exe) == 0:
-            return f"{user_file_exe} executed successfully"
+          if  subprocess.call(user_file_exe):
+            return f"{user_file_exe} is executable"
           else:
             return f"{user_file_exe} Failed to execute"
         except Exception as err:
@@ -71,12 +73,40 @@ def send_screenshot():
         return f"failed to save screenshot: {err}"
 
 
-def exit_fucntion(client_socket):
+def exit_function(client_socket):
     try:
         client_socket.close()
-        return "existed server"
     except Exception as err:
-        return f"failed to close client: {err}"
+        logging.error("failed to close client:" ,{err})
+
+
+def help_function(data):
+    if data == "DIR":
+        return "DIR <path>: lists all files in the specified directory."
+
+    elif data == "REMOVE":
+        return "REMOVE <file_path.<extension>>: deletes the specified file."
+
+    elif data == "COPY":
+        return "COPY <source_path>.<extension> <destination_path>.<extension>: copies a file from source to destination."
+
+    elif data == "EXECUTE":
+        return "EXECUTE <file_path>.<executble-extension>: runs the specified script."
+
+    elif data == "SCREENSHOT":
+        return "SCREENSHOT: takes a screenshot and sends it to client."
+
+    elif data == "EXIT":
+        return "EXIT: closes the connection to the server."
+
+    elif data == "HELP":
+        return "HELP <command>: shows usage information for the given command."
+
+    else:
+        return f"no help available for '{data}' try-DIR/REMOVE/COPY/EXECUTE/SCREENSHOT/EXIT"
+
+
+
 
 def main():
     my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -90,27 +120,45 @@ def main():
 
             try:
                 while True:
-                    request_bytes = recv_message(client_socket)
-                    if not request_bytes:
+                    cmd , data = Protocol.recv_message(client_socket)
+                    if cmd is None:
                         break
-                    request = request_bytes.decode()
 
-                    if request.startswith("DIR"):
-                        path_without_command = request[4:].strip()
-                        files_list = dir_path(path_without_command)
+                    if cmd == "DIR":
+                        files_list = dir_path(data)
                         response_to_user = "\n".join(files_list)
-                        send_message(client_socket, response_to_user.encode())
+                        Protocol.send_message(client_socket,  response_to_user)
 
-                    elif request == 'EXIT':
-                        response_to_user = exit_fucntion(client_socket)
-                        logging.info("exited server")
-                        send_message(client_socket, response_to_user.encode())
+                    elif cmd == "REMOVE":
+                        response_to_user = remove_file(data)
+                        Protocol.send_message(client_socket,  response_to_user)
+
+                    elif cmd == "COPY":
+                        src, dest = data.split(" ",1)
+                        response_to_user = copy_files(src, dest)
+                        Protocol.send_message(client_socket, response_to_user)
+
+                    elif cmd == "EXECUTE":
+                        response_to_user = execute_files(data)
+                        Protocol.send_message(client_socket, response_to_user)
+
+                    elif cmd == "SCREENSHOT":
+                        take_screenshot()
+                        response_to_user = send_screenshot()
+                        Protocol.send_message(client_socket,response_to_user)
+
+                    elif cmd == "EXIT":
+                        exit_function(client_socket)
+                        logging.info('client has exited')
                         break
+
+                    elif cmd == "HELP":
+                        response_to_user = help_function(data)
+                        Protocol.send_message(client_socket, response_to_user)
 
                     else:
-                        wrong_request = request + ' is not a valid command'
-                        send_message(client_socket, wrong_request.encode())
-                        logging.warning('user sent unavailable request')
+                        response_to_user ="invalid command, please try again(DIR/REMOVE/COPY/EXECUTE/SCREENSHOT/EXIT)"
+                        Protocol.send_message(client_socket, response_to_user)
 
             except socket.error as err:
                 logging.error('received socket error on client socket ' + str(err))
