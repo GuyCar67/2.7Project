@@ -23,15 +23,17 @@ def main():
 
             cmd, data = Protocol.recv_message(my_socket)
             if cmd is None:
-                logging.info("user disconnected")
+                logging.info("Server disconnected")
                 break
 
-            if cmd == "SCREENSHOT":
-                with open("received_screenshot.jpg", "wb") as f:
+            if cmd == "BIN":
+                with open("screenshot_after_print.jpg", "wb") as f:
                     f.write(data)
-                print("Screenshot saved.")
+                print(" Screenshot saved as 'screenshot_after_print.jpg'")
+            elif cmd == "TXT":
+                print(f"{data}") #TXT
             else:
-                print(cmd)
+                print(f"smth went wrong: {cmd}")
 
 
     except socket.error as err:

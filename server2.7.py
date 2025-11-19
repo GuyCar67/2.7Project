@@ -10,15 +10,14 @@ import glob
 import os
 import shutil
 import subprocess
-from re import search
-
 import pyautogui
 import Protocol
 
 
 QUEUE_LEN = 1
 MAX_PACKET= 1024
-
+SERVER_IP = "127.0.0.1"
+SERVER_PORT = 6741
 
 def dir_path(user_dir):
     try:
@@ -103,7 +102,7 @@ def help_function(data):
         return "HELP <command>: shows usage information for the given command."
 
     else:
-        return f"no help available for '{data}' try-DIR/REMOVE/COPY/EXECUTE/SCREENSHOT/EXIT"
+        return f"no help available try HELP + <DIR/REMOVE/COPY/EXECUTE/SCREENSHOT/EXIT>"
 
 
 
@@ -111,7 +110,7 @@ def help_function(data):
 def main():
     my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        my_socket.bind(('0.0.0.0', 6741))
+        my_socket.bind((SERVER_IP, SERVER_PORT))
         my_socket.listen(QUEUE_LEN)
 
         while True:
@@ -127,25 +126,25 @@ def main():
                     if cmd == "DIR":
                         files_list = dir_path(data)
                         response_to_user = "\n".join(files_list)
-                        Protocol.send_message(client_socket,  response_to_user)
+                        Protocol.send_response(client_socket,  response_to_user)
 
                     elif cmd == "REMOVE":
                         response_to_user = remove_file(data)
-                        Protocol.send_message(client_socket,  response_to_user)
+                        Protocol.send_response(client_socket,  response_to_user)
 
                     elif cmd == "COPY":
                         src, dest = data.split(" ",1)
                         response_to_user = copy_files(src, dest)
-                        Protocol.send_message(client_socket, response_to_user)
+                        Protocol.send_response(client_socket, response_to_user)
 
                     elif cmd == "EXECUTE":
                         response_to_user = execute_files(data)
-                        Protocol.send_message(client_socket, response_to_user)
+                        Protocol.send_response(client_socket, response_to_user)
 
                     elif cmd == "SCREENSHOT":
                         take_screenshot()
                         response_to_user = send_screenshot()
-                        Protocol.send_message(client_socket,response_to_user)
+                        Protocol.send_response(client_socket,response_to_user)
 
                     elif cmd == "EXIT":
                         exit_function(client_socket)
@@ -154,11 +153,11 @@ def main():
 
                     elif cmd == "HELP":
                         response_to_user = help_function(data)
-                        Protocol.send_message(client_socket, response_to_user)
+                        Protocol.send_response(client_socket, response_to_user)
 
                     else:
                         response_to_user ="invalid command, please try again(DIR/REMOVE/COPY/EXECUTE/SCREENSHOT/EXIT)"
-                        Protocol.send_message(client_socket, response_to_user)
+                        Protocol.send_response(client_socket, response_to_user)
 
             except socket.error as err:
                 logging.error('received socket error on client socket ' + str(err))
