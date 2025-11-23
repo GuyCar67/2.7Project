@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97a15429-ddd2-411c-aed1-abd90da03296" name="Changes" comment="14/11&#10;screenshot not working&#10;unfinshed logs,asserts&#10;need cleanup">
+    <list default="true" id="97a15429-ddd2-411c-aed1-abd90da03296" name="Changes" comment="19/11&#10;everything working,fix accesabilty&#10;unfinshed logs,asserts&#10;need cleanup">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client2.7.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client2.7.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Protocol.py" beforeDir="false" afterPath="$PROJECT_DIR$/Protocol.py" afterDir="false" />
@@ -99,12 +99,21 @@
       <option name="project" value="LOCAL" />
       <updated>1763149306648</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="19/11&#10;everything working,fix accesabilty&#10;unfinshed logs,asserts&#10;need cleanup">
+      <option name="closed" value="true" />
+      <created>1763581130232</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1763581130232</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="13/11" />
     <MESSAGE value="14/11&#10;screenshot not working&#10;unfinshed logs,asserts&#10;need cleanup" />
-    <option name="LAST_COMMIT_MESSAGE" value="14/11&#10;screenshot not working&#10;unfinshed logs,asserts&#10;need cleanup" />
+    <MESSAGE value="19/11&#10;everything working,fix accesabilty&#10;unfinshed logs,asserts&#10;need cleanup" />
+    <option name="LAST_COMMIT_MESSAGE" value="19/11&#10;everything working,fix accesabilty&#10;unfinshed logs,asserts&#10;need cleanup" />
   </component>
 </project>

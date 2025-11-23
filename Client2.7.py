@@ -7,7 +7,7 @@ import Protocol
 MAX_PACKET = 1024
 SERVER_IP = "127.0.0.1"
 SERVER_PORT = 6741
-
+COMMAND_LIST = ["DIR","REMOVE","COPY","EXECUTE","SCREENSHOT","EXIT","HELP"]
 
 def main():
     my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -15,25 +15,39 @@ def main():
         my_socket.connect((SERVER_IP, SERVER_PORT))
         logging.info("connected to server")
         while True:
-            user_input = input("Enter command:"
-                               "DIR/REMOVE/COPY/EXECUTE/SCREENSHOT/EXIT <path>:"
+            user_cmd = input("Enter command:"
+                               "DIR/REMOVE/COPY/EXECUTE/SCREENSHOT/EXIT"
                                "Enter HELP for detailed help")
-            Protocol.send_message(my_socket, user_input)
-            logging.info(f'user has chosen mode {user_input}')
+            while user_cmd not in COMMAND_LIST:
+                user_cmd = input("Enter command:"
+                                 "DIR/REMOVE/COPY/EXECUTE/SCREENSHOT/EXIT"
+                                 "Enter HELP for detailed help")
+            if user_cmd not in ["SCREENSHOT", "EXIT",]:
+                if user_cmd == "HELP":
+                    logging.info(f"user command was {user_cmd}")
+                    user_data = input("Please enter cmd you want to recive instructions on.")
+                else:
+                    user_data = input("Please enter <path>/")
+            else:
+                user_data = ""
+            Protocol.send_message(my_socket, user_cmd,user_data )
+            logging.info(f'user has chosen mode {user_cmd}')
 
             cmd, data = Protocol.recv_message(my_socket)
             if cmd is None:
-                logging.info("Server disconnected")
+                logging.error("Server disconnected")
                 break
-
-            if cmd == "BIN":
-                with open("screenshot_after_print.jpg", "wb") as f:
+            if cmd == "SCREENSHOT":
+                with open('screenshot_after_print.jpg', 'wb') as f:
                     f.write(data)
-                print(" Screenshot saved as 'screenshot_after_print.jpg'")
-            elif cmd == "TXT":
-                print(f"{data}") #TXT
+                print('Screenshot saved as "screenshot_received.jpg"')
+                logging.info(f'screenshot was saved as "screenshot_received.jpg"')
             else:
-                print(f"smth went wrong: {cmd}")
+                print(f"{data}")
+
+
+
+
 
 
     except socket.error as err:
