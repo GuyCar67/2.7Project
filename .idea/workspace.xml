@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97a15429-ddd2-411c-aed1-abd90da03296" name="Changes" comment="19/11&#10;everything working,fix accesabilty&#10;unfinshed logs,asserts&#10;need cleanup">
+    <list default="true" id="97a15429-ddd2-411c-aed1-abd90da03296" name="Changes" comment="21/11&#10;everything working&#10;finished logs,asserts&#10;+-need cleanup&#10;need documation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client2.7.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client2.7.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Protocol.py" beforeDir="false" afterPath="$PROJECT_DIR$/Protocol.py" afterDir="false" />
@@ -107,13 +107,22 @@
       <option name="project" value="LOCAL" />
       <updated>1763581130232</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="21/11&#10;everything working&#10;finished logs,asserts&#10;+-need cleanup&#10;need documation">
+      <option name="closed" value="true" />
+      <created>1763929574904</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1763929574904</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="13/11" />
     <MESSAGE value="14/11&#10;screenshot not working&#10;unfinshed logs,asserts&#10;need cleanup" />
     <MESSAGE value="19/11&#10;everything working,fix accesabilty&#10;unfinshed logs,asserts&#10;need cleanup" />
-    <option name="LAST_COMMIT_MESSAGE" value="19/11&#10;everything working,fix accesabilty&#10;unfinshed logs,asserts&#10;need cleanup" />
+    <MESSAGE value="21/11&#10;everything working&#10;finished logs,asserts&#10;+-need cleanup&#10;need documation" />
+    <option name="LAST_COMMIT_MESSAGE" value="21/11&#10;everything working&#10;finished logs,asserts&#10;+-need cleanup&#10;need documation" />
   </component>
 </project>

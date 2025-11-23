@@ -2,6 +2,11 @@ import struct
 import logging
 GLOB_LEN = 4
 def send_message(sock, cmd, data):
+    """
+    sends a message and builds a protcol consisting of len(cmd)cmdlen(data)data
+    param sock,cmd,data
+    return:None
+    """
 
 
     if isinstance(data, str):
@@ -31,6 +36,11 @@ def send_message(sock, cmd, data):
 
 
 def recv_message(sock):
+    """
+    receives a message form user and reads 4 first bytes, and then reads the amount in those 4 bytes twice sends the message without the protcol in txt,txt/txt,bin
+    param sock:
+    return:None/command,data
+    """
 
     try:
         cmd_len_bytes = b''

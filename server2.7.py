@@ -21,6 +21,11 @@ SERVER_PORT = 6741
 
 
 def dir_path(user_dir):
+    """
+    gives the user a directory path,infront of their input
+    param user_dir:
+    return: list of path of dir
+    """
     try:
         files_list =glob.glob(f"{user_dir}/*")
         logging.info("DIR:path of user dir located")
@@ -31,6 +36,11 @@ def dir_path(user_dir):
 
 
 def remove_file(user_file):
+    """
+    removes a file the user has chose
+    param user_file:
+    return:str
+    """
     try:
         os.remove(user_file)
         logging.info(f"REMOVE:removed {user_file}")
@@ -41,6 +51,11 @@ def remove_file(user_file):
 
 
 def copy_files(copy_from, copy_to):
+    """
+    copies a file from src to dest
+    param copy_from,copy_to:
+    return: string -sucssefull/unsucssesfull
+    """
     try:
         shutil.copy(copy_from, copy_to)
         logging.info(f"COPY:copied {copy_from} to {copy_to}")
@@ -51,6 +66,11 @@ def copy_files(copy_from, copy_to):
 
 
 def execute_files(user_file_exe):
+    """
+    checks if a file is executable
+    param user_file_exe:
+    return:str-> whether the file is executable or not
+    """
     try:
         if 0== subprocess.call(user_file_exe):
             logging.info(f"EXE:executed {user_file_exe}")
@@ -64,6 +84,11 @@ def execute_files(user_file_exe):
 
 
 def take_screenshot():
+    """
+    saves a screenshot of the user to a specific file
+    param:None
+    return: str->screenshot saved/failed ot save
+    """
     try:
         image = pyautogui.screenshot()
         image.save(r'screenshot.jpg')
@@ -75,6 +100,11 @@ def take_screenshot():
 
 
 def send_screenshot():
+    """
+    sends the user the screenshot saved in screenshot.jpg
+    param:None
+    return:
+    """
     try:
         with open('screenshot.jpg', 'rb') as screenshot:
             screenshot_bytes = screenshot.read()
@@ -86,6 +116,11 @@ def send_screenshot():
 
 
 def exit_function(client_socket):
+    """
+    closes the client socket->exits the program for the user
+    param client_socket:
+    return: None
+    """
     try:
         client_socket.close()
         logging.info(f"EXIT:client closed")
@@ -94,6 +129,11 @@ def exit_function(client_socket):
 
 
 def help_function(data):
+    """
+    helps the user understand each command
+    param data:
+    return:str-> containing the help msg of user's desired command
+    """
     if data == "DIR":
         logging.info(f"HELP:user requested instruction on DIR")
         return "DIR <path>: lists all files in the specified directory."
@@ -121,6 +161,11 @@ def help_function(data):
 
 
 def assert_func():
+    """
+    checks if all static funcs work
+    param:None
+    return:None
+    """
     check = dir_path(".")
     assert isinstance(check, list)
     assert all(isinstance(x, str) for x in check)
@@ -138,6 +183,10 @@ def assert_func():
 
 
 def main():
+    """
+
+    receives a request from user after he connected to the server and answers accordingly
+    """
     my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         my_socket.bind((SERVER_IP, SERVER_PORT))

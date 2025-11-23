@@ -10,6 +10,9 @@ SERVER_PORT = 6741
 COMMAND_LIST = ["DIR","REMOVE","COPY","EXECUTE","SCREENSHOT","EXIT","HELP"]
 
 def main():
+    """
+    connects to a server and sends requests and receives request
+    """
     my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         my_socket.connect((SERVER_IP, SERVER_PORT))
