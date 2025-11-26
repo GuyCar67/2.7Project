@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97a15429-ddd2-411c-aed1-abd90da03296" name="Changes" comment="23/11&#10;everything working&#10;finished logs,asserts&#10;+-need cleanup&#10;sequance diagram needed&#10;a file taht explains the protcocl">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client2.7.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client2.7.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server2.7.py" beforeDir="false" afterPath="$PROJECT_DIR$/server2.7.py" afterDir="false" />
-    </list>
+    <list default="true" id="97a15429-ddd2-411c-aed1-abd90da03296" name="Changes" comment="23/11&#10;everything working&#10;finished logs,asserts" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -122,7 +118,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763930630998</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="23/11&#10;everything working&#10;finished logs,asserts">
+      <option name="closed" value="true" />
+      <created>1764188306095</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1764188306095</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -131,6 +135,7 @@
     <MESSAGE value="19/11&#10;everything working,fix accesabilty&#10;unfinshed logs,asserts&#10;need cleanup" />
     <MESSAGE value="21/11&#10;everything working&#10;finished logs,asserts&#10;+-need cleanup&#10;need documation" />
     <MESSAGE value="23/11&#10;everything working&#10;finished logs,asserts&#10;+-need cleanup&#10;sequance diagram needed&#10;a file taht explains the protcocl" />
-    <option name="LAST_COMMIT_MESSAGE" value="23/11&#10;everything working&#10;finished logs,asserts&#10;+-need cleanup&#10;sequance diagram needed&#10;a file taht explains the protcocl" />
+    <MESSAGE value="23/11&#10;everything working&#10;finished logs,asserts" />
+    <option name="LAST_COMMIT_MESSAGE" value="23/11&#10;everything working&#10;finished logs,asserts" />
   </component>
 </project>
