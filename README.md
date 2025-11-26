@@ -36,4 +36,5 @@ sends-> DIR C:\Pythonfiles-> (43 3A 5C 70 79 74 68 6F 6E 66 69 6C 65 73)
 recives->PRINT->(( 44 49 52 |43 3A 5C 70 79 74 68 6F 6E 66 69 6C 65 73 5C 32 2E 37 0A 43 3A 5C 70 79 74 68 6F 6E 66 69 6C 65 73 5C 61 31 0A 43 3A 5C 70 79 74 68 6F 6E 66 69 6C 65 73 5C 6E 6F 6E 6F 0A 43 3A 5C 70 79 74 68 6F 6E 66 69 6C 65 73 5C 61 61 61))
 -->PRINT->>>[[C:\pythonfiles\2.7\nC:\pythonfiles\a1\nC:\pythonfiles\nono\nC:\pythonfiles\aaa]]
 sends server another CMD DATA.
-<img width="1723" height="1050" alt="image" src="https://github.com/user-attachments/assets/f0d9fe52-80cf-4e7a-89fd-c5dcebca1b4f" />
+<img width="1676" height="1075" alt="image" src="https://github.com/user-attachments/assets/60c8e237-bc4e-4106-9248-27b867aa4931" />
+
