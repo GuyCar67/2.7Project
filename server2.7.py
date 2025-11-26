@@ -224,7 +224,7 @@ def main():
                         Protocol.send_message(client_socket,cmd,response_to_user)
                         logging.info(f"SCREENSHOT sent to user")
                     elif cmd == "EXIT":
-                        exit_function(client_socket)
+                        Protocol.send_message(client_socket, cmd,"closed socket")
                         logging.info('client has exited')
                         break
 

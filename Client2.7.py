@@ -40,11 +40,15 @@ def main():
             if cmd is None:
                 logging.error("Server disconnected")
                 break
+            if cmd == "EXIT":
+                print("Connection closed by server")
+                logging.info("exit connection")
+                break
             if cmd == "SCREENSHOT":
                 with open('screenshot_after_print.jpg', 'wb') as f:
                     f.write(data)
-                print('Screenshot saved as "screenshot_received.jpg"')
-                logging.info(f'screenshot was saved as "screenshot_received.jpg"')
+                print('Screenshot saved as "screenshot_after_print.jpg"')
+                logging.info(f'screenshot was saved as "screenshot_after_print.jpg"')
             else:
                 print(f"{data}")
 
