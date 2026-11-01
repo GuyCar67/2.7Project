@@ -195,46 +195,54 @@ def main():
             client_socket, client_address = my_socket.accept()
             logging.info('Client connected')
             try:
+                # --- hybrid handshake: send public key, receive Fernet key ---
+                fernet_key = Protocol.server_handshake(client_socket)
+                if fernet_key is None:
+                    logging.critical("handshake failed, dropping client")
+                    client_socket.close()
+                    continue
+                logging.info("secure channel established")
+
                 while True:
-                    cmd , data = Protocol.recv_message(client_socket)
+                    cmd , data = Protocol.recv_message(client_socket, fernet_key)
                     if cmd is None:
                         break
 
                     if cmd == "DIR":
                         files_list = dir_path(data)
                         response_to_user = "\n".join(files_list)
-                        Protocol.send_message(client_socket, cmd,response_to_user)
+                        Protocol.send_message(client_socket, cmd,response_to_user, fernet_key)
                         logging.info(f"DIR sent to user")
                     elif cmd == "REMOVE":
                         response_to_user = remove_file(data)
-                        Protocol.send_message(client_socket,  cmd,response_to_user)
+                        Protocol.send_message(client_socket,  cmd,response_to_user, fernet_key)
                         logging.info(f"REMOVE sent to user")
                     elif cmd == "COPY":
                         src, dest = data.split(" ",1)
                         response_to_user = copy_files(src, dest)
-                        Protocol.send_message(client_socket, cmd,response_to_user)
+                        Protocol.send_message(client_socket, cmd,response_to_user, fernet_key)
                         logging.info(f"COPY sent to user")
                     elif cmd == "EXECUTE":
                         response_to_user = execute_files(data)
-                        Protocol.send_message(client_socket, cmd,response_to_user)
+                        Protocol.send_message(client_socket, cmd,response_to_user, fernet_key)
                         logging.info(f"EXECUTE sent to user")
                     elif cmd == "SCREENSHOT":
                         take_screenshot()
                         response_to_user = send_screenshot()
-                        Protocol.send_message(client_socket,cmd,response_to_user)
+                        Protocol.send_message(client_socket,cmd,response_to_user, fernet_key)
                         logging.info(f"SCREENSHOT sent to user")
                     elif cmd == "EXIT":
-                        Protocol.send_message(client_socket, cmd,"closed socket")
+                        Protocol.send_message(client_socket, cmd, "closed socket", fernet_key)
                         logging.info('client has exited')
                         break
 
                     elif cmd == "HELP":
                         response_to_user = help_function(data)
-                        Protocol.send_message(client_socket,cmd, response_to_user)
+                        Protocol.send_message(client_socket,cmd, response_to_user, fernet_key)
                         logging.info(f"HELP sent to user+<cmd> instruction")
                     else:
                         response_to_user ="invalid command, please try again(DIR/REMOVE/COPY/EXECUTE/SCREENSHOT/EXIT)"
-                        Protocol.send_message(client_socket, cmd, response_to_user)
+                        Protocol.send_message(client_socket, cmd, response_to_user, fernet_key)
                         logging.warning(f"user sent invalid command")
             except socket.error as err:
                 logging.error('received socket error on client socket ' + str(err))

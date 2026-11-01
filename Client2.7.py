@@ -17,6 +17,15 @@ def main():
     try:
         my_socket.connect((SERVER_IP, SERVER_PORT))
         logging.info("connected to server")
+
+        # --- hybrid handshake: get server public key, send Fernet key back ---
+        fernet_key = Protocol.client_handshake(my_socket)
+        if fernet_key is None:
+            print("encryption handshake failed")
+            logging.critical("handshake failed, closing")
+            return
+        logging.info("secure channel established")
+
         while True:
             user_cmd = input("Enter command:"
                                "DIR/REMOVE/COPY/EXECUTE/SCREENSHOT/EXIT"
@@ -33,10 +42,10 @@ def main():
                     user_data = input("Please enter <path>/")
             else:
                 user_data = ""
-            Protocol.send_message(my_socket, user_cmd,user_data )
+            Protocol.send_message(my_socket, user_cmd, user_data, fernet_key)
             logging.info(f'user has chosen mode {user_cmd}')
 
-            cmd, data = Protocol.recv_message(my_socket)
+            cmd, data = Protocol.recv_message(my_socket, fernet_key)
             if cmd is None:
                 logging.error("Server disconnected")
                 break
