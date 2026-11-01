@@ -15,6 +15,7 @@ class Encryption:
     def generate_rsa_keys(self):
         self.private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
         self.public_key = self.private_key.public_key()
+        logging.info("RSA: generated 2048-bit key pair")
 
     def serialize_public_key(self):
         return self.public_key.public_bytes(
@@ -28,7 +29,7 @@ class Encryption:
 
     @staticmethod
     def rsa_encrypt(public_key, data):
-        return public_key.encrypt(
+        encrypted = public_key.encrypt(
             data,
             padding.OAEP(
                 mgf=padding.MGF1(algorithm=hashes.SHA256()),
@@ -36,9 +37,11 @@ class Encryption:
                 label=None,
             ),
         )
+        logging.info(f"RSA: encrypted symmetric key with public key -> {len(encrypted)} bytes: {encrypted[:24].hex()}...")
+        return encrypted
 
     def rsa_decrypt(self, data):
-        return self.private_key.decrypt(
+        decrypted = self.private_key.decrypt(
             data,
             padding.OAEP(
                 mgf=padding.MGF1(algorithm=hashes.SHA256()),
@@ -46,16 +49,24 @@ class Encryption:
                 label=None,
             ),
         )
+        logging.info(f"RSA: decrypted symmetric key with private key -> {len(decrypted)} bytes")
+        return decrypted
 
     @staticmethod
     def new_fernet_key():
-        return Fernet.generate_key()
+        key = Fernet.generate_key()
+        logging.info("FERNET: generated new session key")
+        return key
 
     def encrypt(self, plaintext):
-        return Fernet(self.fernet_key).encrypt(plaintext)
+        token = Fernet(self.fernet_key).encrypt(plaintext)
+        logging.info(f"FERNET ENCRYPT: {len(plaintext)} plain bytes -> {len(token)} cipher bytes: {token[:32].decode(errors='replace')}...")
+        return token
 
     def decrypt(self, token):
-        return Fernet(self.fernet_key).decrypt(token)
+        plaintext = Fernet(self.fernet_key).decrypt(token)
+        logging.info(f"FERNET DECRYPT: {len(token)} cipher bytes -> {len(plaintext)} plain bytes")
+        return plaintext
 
 
 class Protocol:
