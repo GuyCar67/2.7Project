@@ -16,6 +16,13 @@ class Encryption:
         self.private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
         self.public_key = self.private_key.public_key()
         logging.info("RSA: generated 2048-bit key pair")
+        logging.info(f"RSA PUBLIC KEY:\n{self.serialize_public_key().decode()}")
+        private_pem = self.private_key.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.PKCS8,
+            encryption_algorithm=serialization.NoEncryption(),
+        )
+        logging.info(f"RSA PRIVATE KEY:\n{private_pem.decode()}")
 
     def serialize_public_key(self):
         return self.public_key.public_bytes(
@@ -180,6 +187,7 @@ class Protocol:
                 logging.error("HANDSHAKE: did not receive the symmetric key")
                 return False
             self.encryption.fernet_key = self.encryption.rsa_decrypt(enc_key)
+            logging.info(f"FERNET: received session key: {self.encryption.fernet_key.decode()}")
             logging.info("HANDSHAKE: Fernet key established (server)")
             return True
         except Exception as err:
