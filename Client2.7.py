@@ -1,6 +1,6 @@
 import socket
 import logging
-import Protocol
+from Protocol import Protocol, Encryption
 
 
 
@@ -18,9 +18,8 @@ def main():
         my_socket.connect((SERVER_IP, SERVER_PORT))
         logging.info("connected to server")
 
-        # --- hybrid handshake: get server public key, send Fernet key back ---
-        fernet_key = Protocol.client_handshake(my_socket)
-        if fernet_key is None:
+        protocol = Protocol(my_socket, Encryption())
+        if not protocol.client_handshake():
             print("encryption handshake failed")
             logging.critical("handshake failed, closing")
             return
@@ -42,10 +41,10 @@ def main():
                     user_data = input("Please enter <path>/")
             else:
                 user_data = ""
-            Protocol.send_message(my_socket, user_cmd, user_data, fernet_key)
+            protocol.send_message(user_cmd, user_data)
             logging.info(f'user has chosen mode {user_cmd}')
 
-            cmd, data = Protocol.recv_message(my_socket, fernet_key)
+            cmd, data = protocol.recv_message()
             if cmd is None:
                 logging.error("Server disconnected")
                 break
