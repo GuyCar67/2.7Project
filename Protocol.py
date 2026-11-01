@@ -55,17 +55,31 @@ class Encryption:
     @staticmethod
     def new_fernet_key():
         key = Fernet.generate_key()
-        logging.info("FERNET: generated new session key")
+        logging.info(f"FERNET: generated new session key: {key.decode()}")
         return key
+
+    @staticmethod
+    def _preview(data, limit=120):
+        try:
+            text = data.decode()
+            if len(text) > limit:
+                text = text[:limit] + "..."
+            return repr(text)
+        except UnicodeDecodeError:
+            return f"<{len(data)} binary bytes> {data[:24].hex()}..."
 
     def encrypt(self, plaintext):
         token = Fernet(self.fernet_key).encrypt(plaintext)
-        logging.info(f"FERNET ENCRYPT: {len(plaintext)} plain bytes -> {len(token)} cipher bytes: {token[:32].decode(errors='replace')}...")
+        logging.info(f"FERNET ENCRYPT ({len(plaintext)}->{len(token)} bytes)")
+        logging.info(f"    plain : {self._preview(plaintext)}")
+        logging.info(f"    cipher: {token.decode(errors='replace')}")
         return token
 
     def decrypt(self, token):
         plaintext = Fernet(self.fernet_key).decrypt(token)
-        logging.info(f"FERNET DECRYPT: {len(token)} cipher bytes -> {len(plaintext)} plain bytes")
+        logging.info(f"FERNET DECRYPT ({len(token)}->{len(plaintext)} bytes)")
+        logging.info(f"    cipher: {token.decode(errors='replace')}")
+        logging.info(f"    plain : {self._preview(plaintext)}")
         return plaintext
 
 
